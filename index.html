@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>PHP Desafios</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.11/jquery.mask.min.js"></script>
+</head>
+
+<body>
+    <form id="formAtividades" action="/desafio.php">
+        <select name="atividade" id="atividades" onchange="atualizarInputs()"> <!--toda vez que input mudar chama esse metodo-->
+            <option disabled selected value> -- selecione a atividade -- </option>
+            <option value="1">Tamanho e caracteres</option>
+            <option value="2">Espaço com hifens</option>
+            <option value="3">Vogais por '?'</option>
+            <option value="4">3 ultimos numeros</option>
+            <option value="5">Nome e data formatados</option>
+            <option value="6">Palavra inversa</option>
+            <option value="7">Link funcional</option>
+            <option value="8">Formulario de login</option>
+        </select>
+        <input type="submit" value="testar">
+    </form>
+
+    <script>
+        function atualizarInputs() {
+            let atividadeNum = document.getElementById("atividades").value; //pega valor da atividade selecionada atual
+
+            //https://stackoverflow.com/questions/3387427/remove-element-by-id
+            if (document.getElementById("inputAtividade") != null) { //se elemento de input ja existir, deleta pra criar outro certo
+                let elem = document.getElementById("inputAtividade"); //pega elemento por id
+                $("#inputAtividade").unmask(); //tira mascara (se existir)
+                elem.parentElement.removeChild(elem); //deleta
+            }
+            if (document.getElementById("dataAtividade") != null) { //se elemento de data existir, deleta
+                let elem = document.getElementById("dataAtividade"); //elemento por id etc etc..
+                elem.parentElement.removeChild(elem);
+            }
+
+            if (atividadeNum != "8") { //se atividade nao for o login (8)
+                let novoInput = document.createElement("input"); //declara input de texto
+                novoInput.setAttribute("type", "text");
+                novoInput.setAttribute("id", "inputAtividade");
+                novoInput.setAttribute("name", "texto");
+                let novaData = document.createElement("input"); //declara input de data
+                novaData.setAttribute("type", "date");
+                novaData.setAttribute("id", "dataAtividade");
+                novaData.setAttribute("name", "data");
+
+                let formInput = document.getElementById('formAtividades'); //pega elemento do form pra colocar os novos elementos
+                switch (atividadeNum) {
+                    case "1":
+                    case "2":
+                    case "3":
+                        //nada de diferente
+                        break;
+                    case "4":
+                        $("#inputAtividade").mask("00.000-000"); //mascara do cep
+                        break;
+                    case "5":
+                        formInput.appendChild(novaData); //elemento de data
+                        break;
+                    case "6":
+                        //nada de diferente
+                        break;
+                    case "7":
+                        novoInput.readOnly = true;
+                        novoInput.setAttribute("value", "rb.arblu.www"); //valor fixo
+                        break;
+                }
+                formInput.appendChild(novoInput); //coloca elemento
+            } //se atividade nao for 8, nao coloca nada. essa é a atividade do form de login e nao precisa de parametros
+        }
+    </script>
+</body>
+
+</html>
